@@ -9,7 +9,8 @@
 
 // Delay between adjusting speed in milliseconds.
 #define RAMP_DELAY      5
-#define MAX_MOTOR_SPEED 1022
+#define MAX_POT         1024
+#define MAX_MOTOR_SPEED 1022 
 
 enum Direction { Forwards, Reverse };
 enum RampState { Accelerating, Decelerating };
@@ -74,8 +75,8 @@ void loop() {
 
     // Cap speed to what's selected on the potentiometer
     currentSpeed = constrain(currentSpeed, 0, maxSpeed);
-    // Also cap speed to MAX_MOTOR_SPEED
-    currentSpeed = constrain(currentSpeed, 0, MAX_MOTOR_SPEED);
+    // Map potentiometer value to the motor value
+    currentSpeed = map(currentSpeed, 0, MAX_POT, 0, MAX_MOTOR_SPEED);
 
     Serial.println(currentSpeed);
   }
