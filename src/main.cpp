@@ -7,13 +7,21 @@
 #define MOTOR_DIR_PIN   D6
 #define MOTOR_SPEED_PIN D2
 
+#define MAX_POT         1024
+#define MAX_MOTOR_SPEED 1022
+
 // Delay between adjusting speed in milliseconds.
 #define RAMP_DELAY      5
-#define MAX_POT         1024
-#define MAX_MOTOR_SPEED 1022 
 
-enum Direction { Forwards, Reverse };
-enum RampState { Accelerating, Decelerating };
+enum Direction {
+  Forwards,
+  Reverse
+};
+
+enum RampState {
+  Accelerating,
+  Decelerating
+};
 
 int currentSpeed = 0;
 long int prevNow = millis();
