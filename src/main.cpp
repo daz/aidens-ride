@@ -82,9 +82,10 @@ void loop() {
     // Reset previous time to now
     prevNow = now;
     // Increase speed if we're accelerating otherwise decrease
-    switch (rampState) {
-      case Accelerating: currentSpeed++;
-      case Decelerating: currentSpeed--;
+    if (rampState == Accelerating) {
+      currentSpeed++;
+    } else {
+      currentSpeed--;
     }
 
     // Cap speed to what's selected on the potentiometer
