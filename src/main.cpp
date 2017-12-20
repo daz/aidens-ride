@@ -11,7 +11,7 @@
 #define MAX_MOTOR_SPEED 1022
 
 // Delay between adjusting speed in milliseconds.
-#define RAMP_DELAY      5
+#define RAMP_INTERVAL   5
 
 enum Direction {
   Forwards,
@@ -23,31 +23,36 @@ enum RampState {
   Decelerating
 };
 
-int currentSpeed = 0;
-long int prevNow = millis();
+Direction getSelectedDirection();
 
-Direction prevDirection = Forwards;
+unsigned int currentSpeed = 0;
+unsigned long prevNow = millis();
+
+Direction prevDirection;
 bool changingDir = false;
 
 void setup() {
   Serial.begin(115200);
+
   pinMode(ACCELERATOR_PIN, INPUT);
   pinMode(DIR_SELECT_PIN, INPUT);
   pinMode(MOTOR_DIR_PIN, OUTPUT);
+
+  prevDirection = getSelectedDirection();
 }
 
 void loop() {
   // Set currentDirection to Forwards or Reverse
-  Direction currentDirection = (digitalRead(DIR_SELECT_PIN) == HIGH ? Forwards : Reverse);
+  Direction currentDirection = getSelectedDirection();
 
   // Has the direction changed since last loop?
   if (currentDirection != prevDirection) {
     changingDir = true;
-    prevDirection = currentDirection;
   }
+  prevDirection = currentDirection;
 
   // Only write to MOTOR_DIR_PIN if we aren't moving
-  if (currentSpeed <= 0) {
+  if (currentSpeed == 0) {
     changingDir = false;
     digitalWrite(MOTOR_DIR_PIN, (currentDirection == Forwards ? HIGH : LOW));
   }
@@ -68,11 +73,11 @@ void loop() {
   }
 
   // Get current time in milliseconds
-  long int now = millis();
+  unsigned long now = millis();
 
-  // If it's been RAMP_DELAY milliseconds since previous time...
-  if (now - prevNow >= RAMP_DELAY) {
-    // reset previous time to now
+  // If it's been RAMP_INTERVAL milliseconds since previous time...
+  if (now - prevNow >= RAMP_INTERVAL) {
+    // Reset previous time to now
     prevNow = now;
     // Increase speed if we're accelerating otherwise decrease
     switch (rampState) {
@@ -90,4 +95,8 @@ void loop() {
 
   // Send speed to the motor
   analogWrite(MOTOR_SPEED_PIN, currentSpeed);
+}
+
+Direction getSelectedDirection() {
+  return digitalRead(DIR_SELECT_PIN) != HIGH ? Reverse : Forwards;
 }
