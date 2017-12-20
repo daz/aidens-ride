@@ -59,6 +59,8 @@ void loop() {
 
   // Read max speed from potentiometer
   int maxSpeed = analogRead(MAX_SPEED_PIN);
+  // Map maxSpeed to the max motor speed
+  maxSpeed = map(maxSpeed, 0, MAX_POT, 0, MAX_MOTOR_SPEED);
 
   // Get current accelerator button state
   int buttonState = digitalRead(ACCELERATOR_PIN);
@@ -87,8 +89,6 @@ void loop() {
 
     // Cap speed to what's selected on the potentiometer
     currentSpeed = constrain(currentSpeed, 0, maxSpeed);
-    // Map potentiometer value to the motor value
-    currentSpeed = map(currentSpeed, 0, MAX_POT, 0, MAX_MOTOR_SPEED);
 
     Serial.println(currentSpeed);
   }
