@@ -25,7 +25,7 @@ enum RampState {
 
 Direction getSelectedDirection();
 
-unsigned int currentSpeed = 0;
+int currentSpeed = 0;
 unsigned long prevNow = millis();
 
 Direction prevDirection;
