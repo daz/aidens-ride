@@ -1,14 +1,14 @@
 #include <Arduino.h>
 
-#define ACCELERATOR_PIN D1
+#define ACCELERATOR_PIN 7
 #define MAX_SPEED_PIN   A0
-#define DIR_SELECT_PIN  D5
+#define DIR_SELECT_PIN  8
 
-#define MOTOR_DIR_PIN   D6
-#define MOTOR_SPEED_PIN D2
+#define MOTOR_DIR_PIN   2
+#define MOTOR_SPEED_PIN 4
 
 #define MAX_POT         1024
-#define MAX_MOTOR_SPEED 1022
+#define MAX_MOTOR_SPEED 255
 
 // Delay between adjusting speed in milliseconds.
 #define RAMP_INTERVAL   5
